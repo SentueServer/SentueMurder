@@ -1,0 +1,17 @@
+name: Murder
+main: com.sentue.dev.SentueMurder.MurderMain
+version: 1.0
+description: >
+             Garry's Mod Murder plugin
+commands:
+  packet:
+    description: The plugin is not yet known
+  hide:
+    description: The plugin is not yet known
+  army:
+    description: The plugin is not yet known
+  mob:
+    description: The plugin is not yet known
+
+
+
