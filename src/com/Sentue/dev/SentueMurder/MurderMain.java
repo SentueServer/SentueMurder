@@ -1,6 +1,5 @@
 package com.Sentue.dev.SentueMurder;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
@@ -8,15 +7,13 @@ import java.util.Random;
 import net.minecraft.server.v1_7_R1.PacketPlayOutWorldParticles;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.craftbukkit.v1_7_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 public class MurderMain extends JavaPlugin{
 	
@@ -25,7 +22,7 @@ public class MurderMain extends JavaPlugin{
 	}
 	
 	public void onEnable(){
-		
+		Bukkit.getPluginManager().registerEvents(new EventListener(), getPlugin());
 	}
 	
 	public void onDisable(){
@@ -36,14 +33,26 @@ public class MurderMain extends JavaPlugin{
 		int gameId = GameManager.getNextGameId();
 		GameManager.registerGame(gameId, new Location(players.get(1).getWorld(), 0, 0, 0));
 		
+		PotionEffect Blind = new PotionEffect(PotionEffectType.BLINDNESS, 100, 1);
+		PotionEffect Night = new PotionEffect(PotionEffectType.NIGHT_VISION, 100, 1);
+		
 		Iterator<Player> iterator = players.iterator();
 		while(iterator.hasNext()){
 			Player player = iterator.next();
 			PlayerManager.resetPlayerInfo(player);
 			PlayerManager.setPlayerInfo(player, "bystander", gameId);
+			player.addPotionEffect(Blind);
+			player.addPotionEffect(Night);
+			sortInventory(player);
 		}
 		
 		pickRandomRoles(players, gameId);
+	}
+	
+	public void sortInventory(Player player){
+		player.getInventory().clear();
+		if(PlayerManager.getPlayerRole(player).equalsIgnoreCase("armed")) player.getInventory().setItem(0, PistolManager.getPistolItem());
+		if(PlayerManager.getPlayerRole(player).equalsIgnoreCase("murderer")) player.getInventory().setItem(0, PistolManager.getPistolItem());
 	}
 	
 	public void displayScreen(Player player){
@@ -61,16 +70,5 @@ public class MurderMain extends JavaPlugin{
 	public static void sendFootprints(Player player, Location loc){
 		PacketPlayOutWorldParticles wp = new PacketPlayOutWorldParticles("footstep", loc.getBlockX(),  loc.getBlockY(), loc.getBlockZ(), 0, 0, 0, 0, 1);
 		((CraftPlayer) player).getHandle().playerConnection.sendPacket(wp);
-	}
-	
-	public static ItemStack getPistolItem(){
-		ItemStack pistol = new ItemStack(Material.CARROT_ITEM);
-		ItemMeta im = pistol.getItemMeta();
-		im.setDisplayName(ChatColor.RED + "Pistol");
-		List<String> lore = new ArrayList<String>();
-		lore.add(ChatColor.YELLOW + "Right click to fire, only shoot the murderer");
-		im.setLore(lore);
-		pistol.setItemMeta(im);
-		return pistol;
 	}
 }

@@ -58,5 +58,4 @@ public class GameManager {
 		armed.put(gameId, player);
 	}
 	
-	
 }

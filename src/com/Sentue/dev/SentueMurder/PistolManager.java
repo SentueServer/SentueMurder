@@ -1,7 +1,9 @@
 package com.Sentue.dev.SentueMurder;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -11,6 +13,8 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.entity.Snowball;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 public class PistolManager {
 
@@ -18,13 +22,14 @@ public class PistolManager {
 	private static HashMap<Player, Integer> ReloadTime = new HashMap<Player, Integer>();
 	
 	public static boolean isGunInHand(Player p){
-		if(!p.getItemInHand().getType().equals(Material.CARROT)) return false;
+		if(!p.getItemInHand().getType().equals(Material.CARROT_ITEM)) return false;
 		if(!p.getItemInHand().getItemMeta().getDisplayName().equalsIgnoreCase(ChatColor.RED + "Pistol")) return false;
 		else return true;
 	}
 	
 	public static void fireGun(Player p){
 		if(!isGunInHand(p)) return;
+		if(isReloading(p)) return;
 		Projectile pro = p.launchProjectile(Snowball.class);
 		pro.setVelocity(pro.getVelocity().multiply(10));
 	}
@@ -90,7 +95,18 @@ public class PistolManager {
 	}
 	
 	public void rewardPistol(Player player){
-		player.getInventory().setItem(0, MurderMain.getPistolItem());
+		player.getInventory().setItem(0, getPistolItem());
+	}
+	
+	public static ItemStack getPistolItem(){
+		ItemStack pistol = new ItemStack(Material.CARROT_ITEM);
+		ItemMeta im = pistol.getItemMeta();
+		im.setDisplayName(ChatColor.RED + "Pistol");
+		List<String> lore = new ArrayList<String>();
+		lore.add(ChatColor.YELLOW + "Right click to fire, only shoot the murderer");
+		im.setLore(lore);
+		pistol.setItemMeta(im);
+		return pistol;
 	}
 	
 }
