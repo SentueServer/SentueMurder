@@ -13,11 +13,13 @@ public class PlayerManager {
 		resetPlayerInfo(player);
 		Role.put(player, role);
 		Game.put(player, game);
+		gameHandler(player, role, game);
 	}
 	
 	public static void resetPlayerInfo(Player player){
 		if(Role.containsKey(player)) Role.remove(player);
 		if(Game.containsKey(player)) Game.remove(player);
+		gameHandler(player, getPlayerRole(player), getPlayerGame(player));
 	}
 	
 	public static String getPlayerRole(Player player){
@@ -33,21 +35,25 @@ public class PlayerManager {
 	public static void setPlayerRole(Player player, String role){
 		if(Role.containsKey(player)) resetPlayerRole(player);
 		Role.put(player, role);
+		gameHandler(player, getPlayerRole(player), getPlayerGame(player));
 	}
 	
 	public static void setPlayerGame(Player player, int game){
 		if(Game.containsKey(player)) resetPlayerGame(player);
 		Game.put(player, game);
+		gameHandler(player, getPlayerRole(player), getPlayerGame(player));
 	}
 	
 	public static void resetPlayerRole(Player player){
 		if(Role.containsKey(player)) Role.remove(player);
 		else return;
+		gameHandler(player, getPlayerRole(player), getPlayerGame(player));
 	}
 	
 	public static void resetPlayerGame(Player player){
 		if(Game.containsKey(player)) Game.remove(player);
 		else return;
+		gameHandler(player, getPlayerRole(player), getPlayerGame(player));
 	}
 	
 	public static boolean hasPlayerRole(Player player){
@@ -58,6 +64,13 @@ public class PlayerManager {
 	public static boolean hasPlayerGame(Player player){
 		if(Game.containsKey(player)) return true;
 		else return false;
+	}
+	
+	public static void gameHandler(Player player, String role, int gameId){
+		switch(role){
+		case "murderer": GameManager.setGameMurderer(gameId, player);
+		case "armed": GameManager.setGameArmed(gameId, player);
+		}
 	}
 	
 }
