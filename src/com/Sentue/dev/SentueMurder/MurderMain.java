@@ -4,7 +4,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
+import net.minecraft.server.v1_7_R1.Packet;
+
 import org.bukkit.Location;
+import org.bukkit.craftbukkit.v1_7_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -42,5 +45,9 @@ public class MurderMain extends JavaPlugin{
 		int armedId = r.nextInt(players.size());
 		PlayerManager.setPlayerInfo(players.get(murdererId), "murderer", gameId);
 		PlayerManager.setPlayerInfo(players.get(armedId), "armed", gameId);
+	}
+	
+	public static void sendFootprints(Player player, Location loc){
+		((CraftPlayer) player).getHandle().playerConnection.sendPacket(new Packet());
 	}
 }
