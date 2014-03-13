@@ -19,7 +19,7 @@ public class PlayerManager {
 	public static void resetPlayerInfo(Player player){
 		if(Role.containsKey(player)) Role.remove(player);
 		if(Game.containsKey(player)) Game.remove(player);
-		gameHandler(player, getPlayerRole(player), getPlayerGame(player));
+		gameHandler(player, "bystander", 0);
 	}
 	
 	public static String getPlayerRole(Player player){
@@ -70,6 +70,7 @@ public class PlayerManager {
 		switch(role){
 		case "murderer": GameManager.setGameMurderer(gameId, player);
 		case "armed": GameManager.setGameArmed(gameId, player);
+		case "bystander": return;
 		}
 	}
 	

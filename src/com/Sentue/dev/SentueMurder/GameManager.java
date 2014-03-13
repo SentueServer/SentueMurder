@@ -58,4 +58,8 @@ public class GameManager {
 		armed.put(gameId, player);
 	}
 	
+	public static void endGame(int gameId, String winner){
+		
+	}
+	
 }

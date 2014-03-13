@@ -1,5 +1,5 @@
 name: Murder
-main: com.sentue.dev.SentueMurder.MurderMain
+main: com.Sentue.dev.SentueMurder.MurderMain
 version: 1.0
 description: >
              Garry's Mod Murder plugin

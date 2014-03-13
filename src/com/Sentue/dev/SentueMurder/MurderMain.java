@@ -1,5 +1,6 @@
 package com.Sentue.dev.SentueMurder;
 
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
@@ -8,6 +9,8 @@ import net.minecraft.server.v1_7_R1.PacketPlayOutWorldParticles;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
 import org.bukkit.craftbukkit.v1_7_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
@@ -27,6 +30,11 @@ public class MurderMain extends JavaPlugin{
 	
 	public void onDisable(){
 		
+	}
+	
+	public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args){
+		if(commandLabel.equalsIgnoreCase("army")) startNewGame(Arrays.asList(Bukkit.getOnlinePlayers()));
+		return false;
 	}
 	
 	public void startNewGame(List<Player> players){
@@ -68,7 +76,7 @@ public class MurderMain extends JavaPlugin{
 	}
 	
 	public static void sendFootprints(Player player, Location loc){
-		PacketPlayOutWorldParticles wp = new PacketPlayOutWorldParticles("footstep", loc.getBlockX(),  loc.getBlockY(), loc.getBlockZ(), 0, 0, 0, 0, 1);
+		PacketPlayOutWorldParticles wp = new PacketPlayOutWorldParticles("footstep", loc.getBlockX(),  loc.getBlockY() + 1, loc.getBlockZ(), 0, 0, 0, 0, 1);
 		((CraftPlayer) player).getHandle().playerConnection.sendPacket(wp);
 	}
 }
